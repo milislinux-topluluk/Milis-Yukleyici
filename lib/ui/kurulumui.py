@@ -7,6 +7,15 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButt
 from PyQt5.QtGui import QPixmap
 
 class KurulumPencere(QWidget):
+    
+    CANLI_KULL="atilla"
+    canli_kull_yol="/etc/canli_kullanici"
+    if os.path.exists(canli_kull_yol):
+        CANLI_KULL=open(canli_kull_yol,"r").read()
+    else:
+		print "canlı kullanıcını belirten dosya bulunamadı."
+        sys.exit(1)
+        
     def __init__(self, ebeveyn=None):
         super(KurulumPencere, self).__init__(ebeveyn)
         self.ebeveyn = ebeveyn
@@ -177,7 +186,7 @@ class KurulumPencere(QWidget):
         os.system('echo -e "' + kullsifre + '\n' + kullsifre + '" | passwd ' + kullisim)
         os.system('echo -e "' + rootsifre + '\n' + rootsifre + '" | passwd root')
         self.surecCubugu.setValue(40)
-        ayar_komut = "cp -r /home/atilla/.config /home/" + kullisim + "/"
+        ayar_komut = "cp -r /home/"+self.CANLI_KULL+"/.config /home/" + kullisim + "/"
         os.system(ayar_komut)
         self.surecCubugu.setValue(60)
         ayar_komut2 = "cp -r /root/.xinitrc /home/" + kullisim + "/"
@@ -252,19 +261,20 @@ class KurulumPencere(QWidget):
         os.system("mount --bind /run " + hedef + "/run")
         self.surecCubugu.setValue(75)
         os.system("cp -rf /tmp/locale.conf " + hedef + "/etc/")
-        os.system("cp -rf /run/initramfs/live/updates/home/atilla/.* "+ hedef + "/etc/skel/")
-        os.system("cp -rf /run/initramfs/live/updates/home/atilla/.* "+ hedef + "/home/"+isim+"/")
-        os.system('chroot ' + hedef + ' rm -rf /home/atilla')
+        os.system("cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/etc/skel/")
+        os.system("cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/home/"+isim+"/")
+        os.system('chroot ' + hedef + ' rm -rf /home/'+self.CANLI_KULL)
         os.system('chroot ' + hedef + ' rm -rf /root/bin/atilla.sh')
         os.system('chroot ' + hedef + ' rm -rf /opt/Milis-Yukleyici')
+        os.system('chroot ' + hedef + ' rm -rf '+self.canli_kull_yol)
         os.system('chroot ' + hedef + ' rm -rf /root/Desktop/kurulum.desktop')
         os.system('chroot ' + hedef + ' rm -rf /home/'+isim+'/Desktop/kurulum.desktop')
         os.system('chroot ' + hedef + ' rm -rf /root/Masaüstü/kurulum.desktop')
         os.system('chroot ' + hedef + ' rm -rf /home/'+isim+'/Masaüstü/kurulum.desktop')
         os.system('chroot ' + hedef + ' rm -rf /root/Masaüstü/milis-kur.desktop')
-        os.system('chroot ' + hedef + ' userdel atilla')
+        os.system('chroot ' + hedef + ' userdel '+self.CANLI_KULL)
         os.system('chroot ' + hedef + ' rm /etc/shadow- /etc/gshadow- /etc/passwd- /etc/group- ')
-        os.system('chroot ' + hedef + ' sed -i "/^atilla/d" /etc/security/opasswd ')
+        os.system('chroot ' + hedef + ' sed -i "/^'+self.CANLI_KULL+'/d" /etc/security/opasswd ')
         os.system('chroot ' + hedef + ' cp /etc/slim.conf.orj /etc/slim.conf ')
         os.system('chroot ' + hedef + ' rm -rf /home/'+isim+'/Desktop')
         os.system('chroot ' + hedef + ' su - '+isim+' -c "xdg-user-dirs-update" ')
