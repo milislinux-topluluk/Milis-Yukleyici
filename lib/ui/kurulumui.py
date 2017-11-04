@@ -13,7 +13,7 @@ class KurulumPencere(QWidget):
     if os.path.exists(canli_kull_yol):
         CANLI_KULL=open(canli_kull_yol,"r").read()
     else:
-		print ("canlı kullanıcını belirten dosya bulunamadı.")
+        print ("canlı kullanıcını belirten dosya bulunamadı.")
         sys.exit(1)
         
     def __init__(self, ebeveyn=None):
