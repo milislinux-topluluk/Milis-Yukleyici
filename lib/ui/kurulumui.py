@@ -265,6 +265,7 @@ class KurulumPencere(QWidget):
         os.system("cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/home/"+isim+"/")
         os.system('chroot ' + hedef + ' rm -rf /home/'+self.CANLI_KULL)
         os.system('chroot ' + hedef + ' rm -rf /root/bin/canli_kullanici.sh')
+        os.system('chroot ' + hedef + ' rm -rf /etc/canli_kullanici')
         os.system('chroot ' + hedef + ' rm -rf /opt/Milis-Yukleyici')
         os.system('chroot ' + hedef + ' rm -rf '+self.canli_kull_yol)
         os.system('chroot ' + hedef + ' rm -rf /root/Desktop/kurulum.desktop')
