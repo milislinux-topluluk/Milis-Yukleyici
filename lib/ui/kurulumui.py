@@ -302,14 +302,14 @@ class KurulumPencere(QWidget):
         #os.system("cp /run/initramfs/live/boot/kernel "+hedef+"/boot/kernel-$(uname -r)")
         os.system("cp /boot/kernel-* "+hedef+"/boot/")
         os.system('chroot ' + hedef + ' dracut --no-hostonly --add-drivers "ahci" -f /boot/initramfs')
-        os.system('chroot ' + hedef + ' ln -s /boot/kernel /boot/kernel-*')
+        os.system('chroot ' + hedef + ' ln -s /boot/kernel-* /boot/kernel')
         self.surecCubugu.setValue(100)
         self.kurulumBilgisiLabel.setText(self.tr("initrd Oluşturuldu"))
 
     def grubKur(self,hedef,baglam):
         hedef = hedef[:-1]
-        os.system("cp -f /root/bin/tamir_grub_plymouth "+baglam+"/roo/bin/")
-        os.system("chroot "+baglam+" tamir_grub_plymouth")
+        os.system("cp -f /root/bin/tamir_grub_plymouth "+baglam+"/root/bin/")
+        os.system("chroot "+baglam+" sh /root/bin/tamir_grub_plymouth")
         if hedef == "/dev/mmcblk0": #SD kart'a kurulum fix
             os.system('chroot ' + baglam + 'grub-install /dev/mmcblk0')
             #os.system("grub-install --boot-directory="+baglam+"/boot /dev/mmcblk0")
