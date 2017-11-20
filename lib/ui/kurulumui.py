@@ -12,6 +12,7 @@ class KurulumPencere(QWidget):
     canli_kull_yol="/etc/canli_kullanici"
     if os.path.exists(canli_kull_yol):
         CANLI_KULL=open(canli_kull_yol,"r").read()
+        CANLI_KULL=CANLI_KULL.strip()
     else:
         print ("canlı kullanıcını belirten dosya bulunamadı.")
         sys.exit(1)
