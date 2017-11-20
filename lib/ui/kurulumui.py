@@ -300,6 +300,7 @@ class KurulumPencere(QWidget):
 
     def grubKur(self,hedef,baglam):
         hedef = hedef[:-1]
+        os.system("chroot "+baglam+" tamir_grub_plymouth")
         if hedef == "/dev/mmcblk0": #SD kart'a kurulum fix
             os.system('chroot ' + baglam + 'grub-install /dev/mmcblk0')
             #os.system("grub-install --boot-directory="+baglam+"/boot /dev/mmcblk0")
