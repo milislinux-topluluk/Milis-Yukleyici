@@ -186,14 +186,16 @@ class KurulumPencere(QWidget):
         os.system('echo -e "' + kullsifre + '\n' + kullsifre + '" | passwd ' + kullisim)
         os.system('echo -e "' + rootsifre + '\n' + rootsifre + '" | passwd root')
         self.surecCubugu.setValue(40)
-        ayar_komut = "cp -r /home/"+self.CANLI_KULL+"/.config /home/" + kullisim + "/"
+        ayar_komut = "cp -rf /home/"+self.CANLI_KULL+"/.config  /home/"+kullisim
+        print("komut_koş:",ayar_komut)
         os.system(ayar_komut)
         self.surecCubugu.setValue(60)
-        ayar_komut2 = "cp -r /root/.xinitrc /home/" + kullisim + "/"
+        ayar_komut2 = "cp -r /root/.xinitrc /home/"+kullisim+"/"
+        print("komut_koş:",ayar_komut2)
         os.system(ayar_komut2)
         self.surecCubugu.setValue(80)
-        saat_komut = "saat_ayarla_tr"
-        os.system(saat_komut)
+        #saat_komut = "saat_ayarla_tr"
+        #os.system(saat_komut)
         self.surecCubugu.setValue(100)
         self.kurulumBilgisiLabel.setText(kullisim + self.tr(" kullanıcısı başarıyla oluşturuldu."))
 
@@ -261,8 +263,11 @@ class KurulumPencere(QWidget):
         os.system("mount --bind /run " + hedef + "/run")
         self.surecCubugu.setValue(75)
         os.system("cp -rf /tmp/locale.conf " + hedef + "/etc/")
-        os.system("cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/etc/skel/")
-        os.system("cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/home/"+isim+"/")
+        komut_skel="cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/* "+ hedef + "/etc/skel/"
+        print("komut_koş:",komut_skel)
+        komut_evdizin="cp -rf /run/initramfs/live/updates/home/"+self.CANLI_KULL+"/.* "+ hedef + "/home/"+isim+"/"
+        print("komut_koş:",komut_evdizin)
+        os.system(komut_evdizin)
         os.system('chroot ' + hedef + ' rm -rf /home/'+self.CANLI_KULL)
         os.system('chroot ' + hedef + ' rm -rf /root/bin/canli_kullanici.sh')
         os.system('chroot ' + hedef + ' rm -rf /etc/canli_kullanici')
@@ -338,8 +343,8 @@ class progressAyarciSinif(QThread):
     def guncelle(self):
         boyut=self.boyutTespit()
         toplamBoyut=self.ebeveyn.toplamBoyut[self.ebeveyn.dizinSirasi-1]
-        print(boyut)
-        print(toplamBoyut)
+        #print(boyut)
+        #print(toplamBoyut)
         if boyut<toplamBoyut:
             yuzde = str(round(boyut/toplamBoyut,2))[2:]
             if len(yuzde) == 1:
